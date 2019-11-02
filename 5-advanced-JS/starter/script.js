@@ -5,31 +5,31 @@
 //   yearOfBirth: 1990,
 //   job: 'teacher'
 // };
-// 
+//
 // //function constructors start with capital letter
 // var Person = function(name, yearOfBirth, job) {
 //   this.name = name;
 //   this.yearOfBirth = yearOfBirth;
 //   this.job = job;
 // }
-// 
+//
 // Person.prototype.calculateAge = function () {
 //   console.log(2016 - this.yearOfBirth);
 // };
-// 
+//
 // Person.prototype.lastName = 'Smith';
-// 
-// 
+//
+//
 // var john = new Person('John', 1990, 'teacher');
-// 
+//
 // john.calculateAge();
-// 
+//
 // var jane = new Person('Jane', 1969, 'designer');
 // var mark = new Person('Mark', 1948, 'retired');
-// 
+//
 // jane.calculateAge();
 // mark.calculateAge();
-// 
+//
 // console.log(john.lastName);
 // console.log(jane.lastName);
 // console.log(mark.lastName);
@@ -45,13 +45,13 @@
 //     console.log(2016 - this.yearOfBirth);
 //   }
 // };
-// 
+//
 // var john = Object.create(personProto);
 // john.name = 'John';
 // john.yearOfBirth = 1990;
 // john.job = 'teacher';
-// 
-// var jane = Object.create(personProto, 
+//
+// var jane = Object.create(personProto,
 // {
 //   name: {value: 'Jane'},
 //   yearOfBirth: {value: 1990},
@@ -69,29 +69,57 @@
 
 
 
+/*******Closures******/
+
+function retirement(retirementAge) {
+  var a = ' years left until retirement';
+  return function(yearOfBirth) {
+    var age = 2016 - yearOfBirth;
+    console.log((retirementAge - age) + a);
+  }
+}
+
+var retirementUS = retirement(66);
+
+retirementUS(1990);
+
+//retirement(66)(1990);
+
+var retirementGermany = retirement(65);
+retirementGermany(1993);
+
+/*
+Closure summary
+An inner function has always access to the variables
+and parameters of its outer function, even after the outer
+function as returned
+*/
+
+/*
+  In the case above, when calling retirementUS function,
+  we actually have the a and retirementAge variable still even
+  though it has been popped off of the execution stack
+*/
 
 
+//interviewQuestion done but with using Closures
+
+function interviewQuestion(job) {
+  var designerString = ', can you please explain what UX design is?';
+  var teacherString = 'What subject do you teach, ';
+  var genericString = ', what do you do?';
+
+  return function(name) {
+    if (job === 'designer') {
+      console.log(name + designerString);
+    } else if (job === 'teacher') {
+      console.log(teacherString + name + '?');
+    } else {
+      console.log('Hello' + name + genericString );
+    }
+  }
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+var teacher = interviewQuestion('teacher');
+teacher('John');
