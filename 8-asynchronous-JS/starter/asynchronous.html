@@ -43,48 +43,113 @@
         // }
         // getRecipe();
 
-        // From Callback Hell to Promises
+        /******From Callback Hell to Promises*****/
         // two parameters are the resolve and reject function
-        const getIDs = new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve([523, 883, 432, 974]);
-          }, 1500);
-        });
+        // const getIDs = new Promise((resolve, reject) => {
+        //   setTimeout(() => {
+        //     resolve([523, 883, 432, 974]);
+        //   }, 1500);
+        // });
 
-        const getRecipe = recID => {
-          return new Promise((resolve, reject) => {
-            setTimeout(id => {
-              const recipe = {title: 'Fresh tomato pasta', publisher: 'Jonas'};
-              resolve(`${id}: ${recipe.title}`);
-            }, 1500, recID);          
-          })
-        };
+        // const getRecipe = recID => {
+        //   return new Promise((resolve, reject) => {
+        //     setTimeout(id => {
+        //       const recipe = {title: 'Fresh tomato pasta', publisher: 'Jonas'};
+        //       resolve(`${id}: ${recipe.title}`);
+        //     }, 1500, recID);          
+        //   })
+        // };
 
-        const getRelated = publisher => {
-          return new Promise((resolve, reject) => {
-            setTimeout(pub => {
-              const recipe = {title: 'Italian Pizza', publisher: 'Jonas'};
-              resolve(`${pub}: ${recipe.title}`);
-            }, 1500, publisher);
-          })
-        };
+        // const getRelated = publisher => {
+        //   return new Promise((resolve, reject) => {
+        //     setTimeout(pub => {
+        //       const recipe = {title: 'Italian Pizza', publisher: 'Jonas'};
+        //       resolve(`${pub}: ${recipe.title}`);
+        //     }, 1500, publisher);
+        //   })
+        // };
         // the then function takes in a callback which the parameters are the result of the resolve function
         // for multiple then, you can chain them by passing in the previous return statement's value
-        getIDs
-        .then(IDs => {
-          console.log(IDs);
-          return getRecipe(IDs[2]);          
-        })
-        .then(recipe => {
-          console.log(recipe);
-          return getRelated('Jonas');
-        })
-        .then(recipe => {
-          console.log(recipe);
-        })
-        .catch(error => {
-          console.log('Error!');
-        });
+        // getIDs
+        // .then(IDs => {
+        //   console.log(IDs);
+        //   return getRecipe(IDs[2]);          
+        // })
+        // .then(recipe => {
+        //   console.log(recipe);
+        //   return getRelated('Jonas');
+        // })
+        // .then(recipe => {
+        //   console.log(recipe);
+        // })
+        // .catch(error => {
+        //   console.log('Error!');
+        // });
+
+        /*****async await ******/
+        //await can only be used inside an async
+        // async function getRecipesAW() {
+        //   const IDs = await getIDs;
+        //   console.log(IDs);
+        //   const recipe = await getRecipe(IDs[2]);
+        //   console.log(recipe);
+        //   const related = await getRelated('Jonas');
+        //   console.log(related);
+
+        //   return recipe;
+        // }
+        // //using the then will consume the return from the async function so result = recipe
+        // getRecipesAW().then(result => console.log(`${result} is the best ever.`));
+
+        /****AJAX and APIs***/
+
+        /****Making AJAX calls with Fetch and Promises***/
+        // the data that comes back from the fetch request is return in the result variable
+        function getWeather(woeid) {
+          fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`)
+          .then(result => {
+            console.log(result);
+            return result.json();
+          })
+          .then(data => {
+            //console.log(data);
+            const today = data.consolidated_weather[0];
+            console.log(`Temperatures in ${data.title} stay between ${today.min_temp} and ${today.max_temp}.`)
+          })
+          .catch(error => console.log(error));
+        }
+        
+        // getWeather(2487956);
+        // getWeather(44418);
+
+        /******Making AJAX Calls with Fetch and Async/Await*****/
+
+        async function getWeatherAW(woeid) {
+          try {
+            const result = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`);
+            const data = await result.json();
+            const today = data.consolidated_weather[0];
+            console.log(`Temperatures in ${data.title} stay between ${today.min_temp} and ${today.max_temp}.`)
+            return data;
+          } catch (error) {
+            alert(error);
+          }
+
+
+        }
+        let dataLondon;
+        getWeatherAW(2487956);
+        getWeatherAW(44418).then(data => {
+            dataLondon = data;
+            console.log(dataLondon);
+          });
+        
+
+
+
+
+
+
 
 
 
