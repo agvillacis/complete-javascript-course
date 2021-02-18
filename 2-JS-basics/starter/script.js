@@ -1,5 +1,11 @@
 /*variables and data types */
 
+
+let age = 30;
+age = 31;
+
+
+const birthyear = 1991;
 /*
 var firstName = 'John';
 console.log(firstName);
